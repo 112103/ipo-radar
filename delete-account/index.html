@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delete your account and data – IPO Radar</title>
+<meta name="description" content="Delete your account and data for the IPO Radar app.">
+<style>
+  :root { color-scheme: light dark; --fg:#1b1b1f; --muted:#5f5f6b; --bg:#ffffff; --card:#eef0ff; --line:#d9dbe8; --link:#3f5af6; --accent:#3f5af6; --ok:#1b8f4a; --err:#c62828; }
+  @media (prefers-color-scheme: dark) { :root { --fg:#e6e6ee; --muted:#a3a3b2; --bg:#121218; --card:#1f2140; --line:#34364d; --link:#9aa8ff; --accent:#6b80ff; --ok:#4cc38a; --err:#ff8a80; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:20px 16px 64px; }
+  header { display:flex; flex-wrap:wrap; gap:6px 16px; align-items:center; font-size:14px; color:var(--muted); padding-bottom:16px; margin-bottom:24px; border-bottom:1px solid var(--line); }
+  header .brand { font-weight:700; color:var(--fg); text-decoration:none; font-size:16px; margin-right:auto; }
+  header span[aria-current] { color:var(--fg); font-weight:600; }
+  h1 { font-size:28px; line-height:1.25; margin:0 0 4px; }
+  h2 { font-size:19px; margin:28px 0 6px; }
+  .updated { color:var(--muted); font-size:14px; margin:0 0 16px; }
+  .card { background:var(--card); border-radius:12px; padding:14px 16px; margin:16px 0; }
+  a { color:var(--link); }
+  ol li, ul li { margin:4px 0; }
+  form { display:grid; gap:14px; margin-top:12px; }
+  label { font-weight:600; font-size:15px; display:grid; gap:6px; }
+  label small { font-weight:400; color:var(--muted); }
+  input, select, textarea { font:inherit; color:inherit; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; width:100%; }
+  textarea { min-height:96px; resize:vertical; }
+  .check { display:flex; gap:10px; align-items:flex-start; font-weight:400; }
+  .check input { width:auto; margin-top:5px; }
+  button { font:inherit; font-weight:600; background:var(--accent); color:#fff; border:0; border-radius:10px; padding:12px 18px; cursor:pointer; justify-self:start; }
+  button[disabled] { opacity:.6; cursor:wait; }
+  .status { padding:12px 14px; border-radius:10px; display:none; }
+  .status.ok { display:block; border:1px solid var(--ok); color:var(--ok); }
+  .status.err { display:block; border:1px solid var(--err); color:var(--err); }
+  .links { display:grid; gap:10px; padding:0; list-style:none; }
+  .links a { display:block; padding:14px 16px; border:1px solid var(--line); border-radius:12px; text-decoration:none; font-weight:600; }
+  .links a small { display:block; font-weight:400; color:var(--muted); }
+  footer { margin-top:40px; font-size:14px; color:var(--muted); }
+  .hp { position:absolute; left:-9999px; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <a class="brand" href="../">IPO Radar</a>
+  <a href="../privacy-policy/">Privacy Policy</a>
+  <a href="../terms/">Terms</a>
+  <span aria-current="page">Delete account</span>
+</header>
+<h1>Delete your IPO Radar account and data</h1>
+<p class="updated">Developer: IPO Radar · Last updated: 18 November 2026</p>
+
+<div class="card">
+<p><strong>Good to know:</strong> IPO Radar keeps your data only on your own phone. We do not run a
+server that stores your PANs, watchlist or settings, so deleting it in the app removes it completely.</p>
+</div>
+
+<h2>Option 1: delete it in the app (instant)</h2>
+<ol>
+  <li>Open <strong>IPO Radar</strong>.</li>
+  <li>Tap <strong>Profile</strong> (bottom bar).</li>
+  <li>Scroll to <strong>Legal</strong> and tap <strong>Delete all my data</strong>.</li>
+  <li>Tap <strong>Delete everything</strong> to confirm.</li>
+</ol>
+<p>Uninstalling the app also removes everything it stored.</p>
+
+<h2>Option 2: ask us to delete it</h2>
+<p>Use this form if you no longer have the app or want us to confirm deletion.
+Your request is emailed to us and we reply within 7 days.</p>
+
+<form id="delete-form" novalidate>
+  <label>Your name
+    <input name="name" autocomplete="name" required maxlength="100">
+  </label>
+  <label>Email address
+    <small>We reply to this address. If you signed in to the app, use that account's email.</small>
+    <input name="email" type="email" autocomplete="email" required maxlength="150">
+  </label>
+  <label>How did you use the app?
+    <select name="sign_in">
+      <option>Without signing in</option>
+      <option>Signed in with Google</option>
+      <option>Signed in with Apple</option>
+      <option>Not sure</option>
+    </select>
+  </label>
+  <label>Anything else? <small>(optional, please do not type your PAN)</small>
+    <textarea name="message" maxlength="1000"></textarea>
+  </label>
+  <label class="check"><input type="checkbox" name="confirm" required>
+    <span>I want my IPO Radar account and all data linked to it deleted.</span>
+  </label>
+  <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button type="submit">Send deletion request</button>
+  <div id="status" class="status" role="status" aria-live="polite"></div>
+</form>
+<p>You can also email us directly: <a href="mailto:frontend.divine@gmail.com?subject=IPO%20Radar%20%E2%80%93%20delete%20my%20account">frontend.divine@gmail.com</a></p>
+
+<h2>What gets deleted</h2>
+<ul>
+  <li>Saved PAN numbers and their labels</li>
+  <li>Allotment results, watchlist, alerts and news</li>
+  <li>Sign-in details (name, email, profile photo link), if you signed in</li>
+  <li>Theme and app settings</li>
+</ul>
+
+<h2>What is kept, and for how long</h2>
+<p>We keep no app data on any server, so nothing from the app is kept. The details you
+send in this form (name, email, message) are used only to handle your request and are
+deleted within 30 days after it is completed.</p>
+<footer>IPO Radar · Contact: <a href="mailto:frontend.divine@gmail.com">frontend.divine@gmail.com</a></footer>
+</main>
+<script>
+(function () {
+  var form = document.getElementById('delete-form');
+  var status = document.getElementById('status');
+  function show(cls, text) { status.className = 'status ' + cls; status.textContent = text; }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    if (form._honey.value) return;
+    var btn = form.querySelector('button');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    fetch('https://formsubmit.co/ajax/frontend.divine@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: 'IPO Radar – account deletion request',
+        _template: 'table',
+        _captcha: 'false',
+        App: 'IPO Radar',
+        Request: 'Delete account and all data',
+        Name: form.name.value,
+        Email: form.email.value,
+        'Used the app': form.sign_in.value,
+        Message: form.message.value || '-',
+        _replyto: form.email.value
+      })
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      if (String(data.success) === 'true') {
+        form.reset();
+        show('ok', 'Thank you. Your deletion request has been sent. We will reply to your email within 7 days.');
+      } else { throw new Error(data.message || 'failed'); }
+    }).catch(function () {
+      show('err', 'Sorry, the request could not be sent. Please email us at frontend.divine@gmail.com with the subject "Delete my account".');
+    }).finally(function () {
+      btn.disabled = false;
+      btn.textContent = 'Send deletion request';
+    });
+  });
+})();
+</script>
+</body>
+</html>
