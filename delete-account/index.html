@@ -94,7 +94,7 @@ Your request is emailed to us and we reply within 7 days.</p>
   <button type="submit">Send deletion request</button>
   <div id="status" class="status" role="status" aria-live="polite"></div>
 </form>
-<p>You can also email us directly: <a href="mailto:frontend.divine@gmail.com?subject=IPO%20Radar%20%E2%80%93%20delete%20my%20account">frontend.divine@gmail.com</a></p>
+<p>Form not working? <a id="mail-btn" href="mailto:frontend.divine@gmail.com?subject=Account%20deletion%20request%20%E2%80%93%20IPO%20Radar">Send by email instead</a>. This opens your email app with the request already written. Or write to <a href="mailto:frontend.divine@gmail.com">frontend.divine@gmail.com</a>.</p>
 
 <h2>What gets deleted</h2>
 <ul>
@@ -115,35 +115,74 @@ deleted within 30 days after it is completed.</p>
   var form = document.getElementById('delete-form');
   var status = document.getElementById('status');
   function show(cls, text) { status.className = 'status ' + cls; status.textContent = text; }
+  // A short reference so each request can be tracked, e.g. DEL-20261118-4F2A.
+  function reference() {
+    var d = new Date();
+    var p = function (n) { return String(n).padStart(2, '0'); };
+    return 'DEL-' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '-' +
+      Math.random().toString(16).slice(2, 6).toUpperCase();
+  }
+  function istTime() {
+    return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' }) + ' IST';
+  }
+  var ref = '';
+  // The email the developer receives (one row per line, in this order).
+  function payload() {
+    return {
+      _subject: 'Account deletion request – IPO Radar – ' + ref,
+      _template: 'table',
+      _captcha: 'false',
+      _replyto: form.email.value,
+      // Confirmation sent to the person who asked.
+      _autoresponse: 'Hi ' + form.name.value + ', we have received your request to delete your IPO Radar ' +
+        'account and data (reference ' + ref + '). We will complete it and reply within 7 days. ' +
+        'If you did not make this request, just reply to this email. – IPO Radar',
+      'Request': 'DELETE ACCOUNT AND ALL DATA',
+      'Reference': ref,
+      'App': 'IPO Radar (Android / iOS)',
+      'Name': form.name.value,
+      'email': form.email.value,
+      'Signed in with': form.sign_in.value,
+      'Message': form.message.value || '(none)',
+      'Requested on': istTime(),
+      'Sent from': location.href,
+      'Action needed': 'Delete any data linked to this email, then reply to confirm. Deadline: 7 days.'
+    };
+  }
+  // Backup: opens the visitor's email app with the request already written.
+  function mailtoLink() {
+    var body = 'Hello,\n\nPlease delete my IPO Radar account and all data linked to it.\n\n' +
+      'Name: ' + (form.name.value || '') + '\n' +
+      'Email: ' + (form.email.value || '') + '\n' +
+      'Signed in with: ' + form.sign_in.value + '\n' +
+      'Message: ' + (form.message.value || '(none)') + '\n' +
+      'Requested on: ' + istTime() + '\n\nThank you.';
+    return 'mailto:frontend.divine@gmail.com?subject=' + encodeURIComponent('Account deletion request – IPO Radar') +
+      '&body=' + encodeURIComponent(body);
+  }
+  document.getElementById('mail-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    location.href = mailtoLink();
+  });
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!form.checkValidity()) { form.reportValidity(); return; }
     if (form._honey.value) return;
-    var btn = form.querySelector('button');
+    ref = reference();
+    var btn = form.querySelector('button[type=submit]');
     btn.disabled = true;
     btn.textContent = 'Sending…';
     fetch('https://formsubmit.co/ajax/frontend.divine@gmail.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        _subject: 'IPO Radar – account deletion request',
-        _template: 'table',
-        _captcha: 'false',
-        App: 'IPO Radar',
-        Request: 'Delete account and all data',
-        Name: form.name.value,
-        Email: form.email.value,
-        'Used the app': form.sign_in.value,
-        Message: form.message.value || '-',
-        _replyto: form.email.value
-      })
+      body: JSON.stringify(payload())
     }).then(function (r) { return r.json(); }).then(function (data) {
       if (String(data.success) === 'true') {
         form.reset();
-        show('ok', 'Thank you. Your deletion request has been sent. We will reply to your email within 7 days.');
+        show('ok', 'Thank you. Your deletion request (' + ref + ') has been sent. A confirmation is on its way to your email, and we will complete the deletion within 7 days.');
       } else { throw new Error(data.message || 'failed'); }
     }).catch(function () {
-      show('err', 'Sorry, the request could not be sent. Please email us at frontend.divine@gmail.com with the subject "Delete my account".');
+      show('err', 'Sorry, the request could not be sent right now. Please tap "Send by email instead" below, or email frontend.divine@gmail.com.');
     }).finally(function () {
       btn.disabled = false;
       btn.textContent = 'Send deletion request';
